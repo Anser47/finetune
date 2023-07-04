@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:fine_tune/db/all_songs_funtion.dart';
 import 'package:fine_tune/db/fav_function.dart';
 import 'package:fine_tune/db/playlist_function.dart';

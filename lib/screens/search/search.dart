@@ -119,10 +119,12 @@ searchfound(context, ValueNotifier<List<AudioModel>> data) {
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.favorite),
+                    icon: const Icon(Icons.favorite_border),
                   ),
                   IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.library_music))
+                    onPressed: () {},
+                    icon: const Icon(Icons.library_music_outlined),
+                  )
                 ],
               ),
             ),
