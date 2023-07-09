@@ -22,9 +22,11 @@ class _ScreenRecentlyState extends State<ScreenRecently> {
     // TODO: implement initState
     super.initState();
     recentBox = Hive.box<AudioModel>("recent");
-    setState(() {
-      getAll();
-    });
+    setState(
+      () {
+        getAll();
+      },
+    );
   }
 
   @override
@@ -96,30 +98,32 @@ class _ScreenRecentlyState extends State<ScreenRecently> {
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        setState(() {
-                                          if (!_isfav) {
-                                            addtofav(_songs);
-                                            _isfav = !_isfav;
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content:
-                                                    Text('Added to Favorite'),
-                                              ),
-                                            );
-                                          } else {
-                                            deletefav(_songs);
-                                            _isfav = !_isfav;
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              const SnackBar(
-                                                content: Text(
-                                                    'Removed from favorite'),
-                                              ),
-                                            );
-                                          }
-                                        });
-                                        setState(() {});
+                                        setState(
+                                          () {
+                                            if (!_isfav) {
+                                              addtofav(_songs);
+                                              _isfav = !_isfav;
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content:
+                                                      Text('Added to Favorite'),
+                                                ),
+                                              );
+                                            } else {
+                                              deletefav(_songs);
+                                              _isfav = !_isfav;
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  content: Text(
+                                                      'Removed from favorite'),
+                                                ),
+                                              );
+                                            }
+                                            getAll();
+                                          },
+                                        );
                                       },
                                       icon: Icon(_isfav
                                           ? Icons.favorite

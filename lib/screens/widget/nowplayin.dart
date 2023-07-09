@@ -19,6 +19,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getAll();
     // allsongBox = Hive.box('all_song_db');
   }
 
@@ -137,6 +138,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                                       deletefav(currentSong);
                                       _isFav = !_isFav;
                                     }
+                                    getAll();
                                   },
                                 );
                               },
@@ -164,7 +166,7 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         child: PlayerBuilder.realtimePlayingInfos(
                             player: player,
                             builder: (context, realtimePlayingInfos) {
@@ -178,8 +180,9 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                                 total: duration,
                                 timeLabelPadding: 15,
                                 timeLabelTextStyle:
-                                    TextStyle(color: Colors.white),
-                                thumbColor: Color.fromARGB(225, 49, 49, 49),
+                                    const TextStyle(color: Colors.white),
+                                thumbColor:
+                                    const Color.fromARGB(225, 49, 49, 49),
                                 baseBarColor:
                                     const Color.fromARGB(255, 85, 85, 85),
                                 onSeek: (duration) => player.seek(duration),
@@ -199,7 +202,6 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                                   } else {
                                     player.setLoopMode(LoopMode.playlist);
                                   }
-                                  print(_shuffle);
                                 },
                               );
                             },
@@ -261,7 +263,6 @@ class _NowPlayingScreenState extends State<NowPlayingScreen> {
                                   } else {
                                     player.setLoopMode(LoopMode.playlist);
                                   }
-                                  print(_repeat);
                                 },
                               );
                             },

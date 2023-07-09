@@ -1,6 +1,5 @@
 import 'package:fine_tune/model/model.dart';
 import 'package:fine_tune/model/playlistmode.dart';
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -54,17 +53,26 @@ playlistDelete(int index) async {
 }
 
 Future<void> playlistRename(int index, String newname) async {
-  String? playListname = eachlist.value[index].playlistName;
-  final playListDB = await Hive.openBox<PlayListModelclass>('PlayList');
-  for (PlayListModelclass element in playListDB.values) {
-    if (element.playlistName == playListname) {
-      var key = element.key;
-      element.playlistName = newname;
-      playListDB.put(key, element);
+  bool check = false;
+  for (var element in eachlist.value) {
+    if (element.playlistName == newname) {
+      check = true;
+      break;
     }
   }
-  eachlist.value[index].playlistName = newname;
-  eachlist.notifyListeners();
+  if (check == false) {
+    String? playListname = eachlist.value[index].playlistName;
+    final playListDB = await Hive.openBox<PlayListModelclass>('PlayList');
+    for (PlayListModelclass element in playListDB.values) {
+      if (element.playlistName == playListname) {
+        var key = element.key;
+        element.playlistName = newname;
+        playListDB.put(key, element);
+      }
+    }
+    eachlist.value[index].playlistName = newname;
+    eachlist.notifyListeners();
+  }
 }
 
 songAddTOPlaylist(AudioModel song, String name, BuildContext context) {

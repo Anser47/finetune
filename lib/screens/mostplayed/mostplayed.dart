@@ -5,6 +5,7 @@ import 'package:fine_tune/screens/bottoman.dart';
 import 'package:fine_tune/screens/playlist/playlistbottomsheet.dart';
 import 'package:fine_tune/screens/widget/nowplayin.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class ScreenMostplayed extends StatefulWidget {
   const ScreenMostplayed({super.key});
@@ -14,17 +15,21 @@ class ScreenMostplayed extends StatefulWidget {
 }
 
 class _ScreenMostplayedState extends State<ScreenMostplayed> {
+  late Box<int> mostlyBox;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    setState(() {
-      getAll();
-    });
+    mostlyBox = Hive.box<int>("Mostly");
+    setState(
+      () {
+        getAll();
+      },
+    );
   }
 
   Widget build(BuildContext context) {
+    getAll();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -90,27 +95,30 @@ class _ScreenMostplayedState extends State<ScreenMostplayed> {
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        if (!_isfav) {
-                                          addtofav(_songs);
-                                          _isfav = !_isfav;
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content:
-                                                  Text('Added to Favorite'),
-                                            ),
-                                          );
-                                        } else {
-                                          deletefav(_songs);
-                                          _isfav = !_isfav;
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              content:
-                                                  Text('Removed from favorite'),
-                                            ),
-                                          );
-                                        }
+                                        setState(() {
+                                          if (!_isfav) {
+                                            addtofav(_songs);
+                                            _isfav = !_isfav;
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content:
+                                                    Text('Added to Favorite'),
+                                              ),
+                                            );
+                                          } else {
+                                            deletefav(_songs);
+                                            _isfav = !_isfav;
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                content: Text(
+                                                    'Removed from favorite'),
+                                              ),
+                                            );
+                                          }
+                                          getAll();
+                                        });
                                       },
                                       icon: Icon(_isfav
                                           ? Icons.favorite

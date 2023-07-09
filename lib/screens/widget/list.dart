@@ -78,8 +78,6 @@ class _SongsListWidgetState extends State<SongsListWidget> {
     return InkWell(
       onTap: () {
         PlayingAudio(widget.allsongsList, widget.index);
-        // log('songid${widget.allsongsList[widget.index].songId}');
-        // log('id${widget.allsongsList[widget.index].id}');
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => NowPlayingScreen(),
