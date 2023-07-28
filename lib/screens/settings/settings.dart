@@ -35,32 +35,6 @@ class ScreenSettings extends StatelessWidget {
                 ),
               ],
             ),
-            // TextButton(
-            //   onPressed: () {},
-            //   child: const Padding(
-            //     padding: EdgeInsets.only(left: 25.0, top: 30),
-            //     child: Text(
-            //       'Profile',
-            //       style: TextStyle(fontSize: 25, color: Colors.white),
-            //     ),
-            //   ),
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.only(left: 25.0, top: 30),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: [
-            //       TextButton(
-            //         onPressed: () {},
-            //         child: const Text(
-            //           'Dark Mode',
-            //           style: TextStyle(fontSize: 25, color: Colors.white),
-            //         ),
-            //       ),
-            //       Switch(value: true, onChanged: (value) {}),
-            //     ],
-            //   ),
-            // ),
             TextButton(
               onPressed: () {},
               child: const Padding(
@@ -75,7 +49,7 @@ class ScreenSettings extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const ScreenAboutUs(),
+                    builder: (context) => const Aboutus(),
                   ),
                 );
               },

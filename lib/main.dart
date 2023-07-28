@@ -1,7 +1,7 @@
 import 'package:fine_tune/model/model.dart';
 import 'package:fine_tune/model/playlistmode.dart';
-import 'package:flutter/material.dart';
 import 'package:fine_tune/screens/splash.dart';
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 void main() async {
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
+      // home: Aboutus(),
       home: const SplashScreen(),
       debugShowCheckedModeBanner: false,
     );

@@ -1,48 +1,68 @@
 import 'package:flutter/material.dart';
 
-class ScreenAboutUs extends StatelessWidget {
-  const ScreenAboutUs({super.key});
+class Aboutus extends StatelessWidget {
+  const Aboutus({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext ctx) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('About Us'),
-      ),
+      appBar: AppBar(),
+      backgroundColor: Colors.black,
       body: const SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.all(18.0),
-              child: Expanded(
-                child: Text(
-                    'Welcome to our local database music app! We are dedicated to providing you with a seamless'
-                    'and immersive music experience right at your fingertips. With our app, you can explore,'
-                    'discover, and enjoy your favorite tunes like never before.'
-                    'At our core, we understand the importance of personalized music curation. That is why we have'
-                    ' designed our app to allow you to create and manage your playlists effortlessly. Whether you are'
-                    'in the mood for an energizing workout session, a relaxing evening at home, or a road trip with'
-                    ' friends, our app empowers you to curate the perfect soundtrack for any moment.'
-                    'Finding the music you love has never been easier. With our powerful search functionality, you'
-                    'can quickly explore our extensive local database of songs, artists, and albums. Simply enter a'
-                    'keyword, and our app will present you with a comprehensive list of matching results, allowing'
-                    'you to dive deeper into your music preferences.'
-                    'We understand that music holds a special place in your heart, and that is why we have incorporated '
-                    'a favorite feature into our app. When you come across a song that resonates with you on a profound level,'
-                    'simply add it to your favorites. This way, you can easily revisit and relive those cherished musical moments'
-                    'whenever you desire.'
-                    'Listening to music is a personal experience, and our app ensures that you have complete '
-                    ' control over your audio journey. With our sleek and intuitive interface, you can play, pause, skip, and '
-                    'repeat your favorite tracks effortlessly. You can also adjust the volume and customize the equalizer settings'
-                    'to enhance your listening experience according to your preferences.'
-                    'Our local database music app is more than just a platform for listening to music'
-                    'it is a gateway to a world of sonic exploration and expression. We invite you to join our vibrant community'
-                    'of music enthusiasts, where you can share your favorite playlists, discover new artists, and connect with'
-                    'like-minded individuals who share your passion for music.'
-                    'So, dive into the world of melodies and rhythms with our local database music app. Let the music surround you,'
-                    'inspire you, and be your constant companion. Welcome to a limitless audio adventure!'),
-              ),
+            SizedBox(
+              height: 20,
             ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    children: [
+                      Text(
+                        'Welcome to fine tune - Your Ultimate Local Storage Music App!',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        "Our mission at fine tune is to put the power of music at your fingertips. Our software is made to improve your musical experience, regardless of whether you're a die-hard music fan, an aspiring musician, or just someone who likes to groove to your favourite tracks.",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Key Features of fine tune:',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        "1. Liberation from Streaming Constraints: Break free from the limitations of streaming services with fine tune. Take full control of your music library by effortlessly uploading, organizing, and storing your entire collection directly on your device. Enjoy uninterrupted access to your favorite tracks, even without an internet connection.\n2. Effortless Organization, Maximum Enjoyment: Experience seamless music organization with fine tune. Craft custom playlists for every mood, genre, or occasion. Effortlessly sort your songs by artist, album, or track name, enabling you to find the perfect song in mere seconds.\n3. Immersive Music Playback: Immerse yourself in an extraordinary listening experience with our meticulously designed music player. Indulge in crystal-clear sound quality and navigate through your tracks effortlessly with our sleek and intuitive interface. Tailor your playback options, shuffle your playlist, and replay your favorite tunes with a single tap.\n4. Personalized Musical Exploration: Embark on an exhilarating musical journey with fine tune. Our app goes beyond by providing personalized recommendations based on your unique listening habits and preferences. Discover new artists, albums, and tracks that perfectly align with your musical taste, expanding your horizons and unearthing hidden gems you may have otherwise overlooked.",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

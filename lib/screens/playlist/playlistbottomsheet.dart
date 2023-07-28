@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:fine_tune/db/playlist_function.dart';
 import 'package:fine_tune/model/model.dart';
 import 'package:flutter/material.dart';

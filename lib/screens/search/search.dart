@@ -1,8 +1,10 @@
 import 'package:fine_tune/audio.dart';
 import 'package:fine_tune/db/all_songs_funtion.dart';
+import 'package:fine_tune/db/fav_function.dart';
 import 'package:fine_tune/model/model.dart';
 import 'package:fine_tune/screens/Widget/list.dart';
 import 'package:fine_tune/screens/Widget/nowplayin.dart';
+import 'package:fine_tune/screens/playlist/playlistbottomsheet.dart';
 import 'package:flutter/material.dart';
 
 class ScreenSearch extends StatefulWidget {
@@ -26,7 +28,17 @@ class _ScreenSearchState extends State<ScreenSearch> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      getAll();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    getAll();
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -60,13 +72,16 @@ class _ScreenSearchState extends State<ScreenSearch> {
                       ),
                     ),
                     IconButton(
-                        onPressed: () {
-                          searchControll.clear();
-                          setState(() {
-                            CustomWidget();
-                          });
-                        },
-                        icon: Icon(Icons.clear))
+                      onPressed: () {
+                        searchControll.clear();
+                        setState(
+                          () {
+                            const CustomWidget();
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
                   ],
                 ),
               ),
@@ -84,55 +99,89 @@ class _ScreenSearchState extends State<ScreenSearch> {
       ),
     );
   }
-}
 
-searchfound(context, ValueNotifier<List<AudioModel>> data) {
-  return ListView.builder(
-    itemCount: data.value.length,
-    itemBuilder: (context, index) => InkWell(
-      onTap: () {
-        // }
-        PlayingAudio(data.value, index);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => NowPlayingScreen(),
-          ),
-        );
-      },
-      child: SizedBox(
-        height: 90,
-        width: 300,
-        child: Card(
-          child: Center(
-            child: ListTile(
-              iconColor: Colors.amber,
-              leading: const Icon(
-                Icons.music_video_sharp,
-                size: 40,
+  searchfound(context, ValueNotifier<List<AudioModel>> data) {
+    getAll();
+    return ListView.builder(
+      itemCount: data.value.length,
+      itemBuilder: (context, index) {
+        var _song = data.value[index];
+        bool _isfav = isFavsong(_song);
+        return InkWell(
+          onTap: () {
+            PlayingAudio(data.value, index);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NowPlayingScreen(),
               ),
-              title: Text(
-                data.value[index].songname!,
-                overflow: TextOverflow.ellipsis,
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.favorite_border),
+            );
+          },
+          child: SizedBox(
+            height: 90,
+            width: 300,
+            child: Card(
+              child: Center(
+                child: ListTile(
+                  iconColor: Colors.amber,
+                  leading: const Icon(
+                    Icons.music_video_sharp,
+                    size: 40,
                   ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.library_music_outlined),
-                  )
-                ],
+                  title: Text(
+                    data.value[index].songname!,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(
+                            () {
+                              if (!_isfav) {
+                                addtofav(_song);
+                                _isfav = !_isfav;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Added to Favorite'),
+                                  ),
+                                );
+                              } else {
+                                deletefav(_song);
+                                _isfav = !_isfav;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Removed from favorite'),
+                                  ),
+                                );
+                              }
+                              getAll();
+                            },
+                          );
+                        },
+                        icon: const Icon(Icons.favorite_border),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PlaylistBottomSheet(music: _song),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.library_music_outlined),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    ),
-  );
+        );
+      },
+    );
+  }
 }
 
 emptySearch() {
