@@ -1,11 +1,13 @@
 import 'package:fine_tune/audio.dart';
-import 'package:fine_tune/db/all_songs_funtion.dart';
 import 'package:fine_tune/db/fav_function.dart';
 import 'package:fine_tune/model/model.dart';
 import 'package:fine_tune/screens/Widget/list.dart';
 import 'package:fine_tune/screens/Widget/nowplayin.dart';
 import 'package:fine_tune/screens/playlist/playlistbottomsheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../application/search_bloc/search_bloc.dart';
 
 class ScreenSearch extends StatefulWidget {
   const ScreenSearch({super.key});
@@ -17,15 +19,15 @@ class ScreenSearch extends StatefulWidget {
 class _ScreenSearchState extends State<ScreenSearch> {
   final TextEditingController searchControll = TextEditingController();
 
-  ValueNotifier<List<AudioModel>> data = ValueNotifier([]);
+  // ValueNotifier<List<AudioModel>> data = ValueNotifier([]);
 
-  void search(String quary, ValueNotifier<List<AudioModel>> data) {
-    data.value = allsongNotifer.value
-        .where((element) => element.songname!
-            .toLowerCase()
-            .contains(quary.toLowerCase().trim()))
-        .toList();
-  }
+  // void search(String quary, ValueNotifier<List<AudioModel>> data) {
+  //   data.value = allsongNotifer.value
+  //       .where((element) => element.songname!
+  //           .toLowerCase()
+  //           .contains(quary.toLowerCase().trim()))
+  //       .toList();
+  // }
 
   @override
   void initState() {
@@ -39,77 +41,81 @@ class _ScreenSearchState extends State<ScreenSearch> {
   @override
   Widget build(BuildContext context) {
     getAll();
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.search),
-                      onPressed: () {},
+    return BlocBuilder<SearchBloc, SearchState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(color: Colors.grey),
                     ),
-                    Expanded(
-                      child: TextField(
-                        controller: searchControll,
-                        decoration: const InputDecoration(
-                          hintText: 'Search',
-                          border: InputBorder.none,
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.search),
+                          onPressed: () {},
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            search(value, data);
-                          });
-                        },
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        searchControll.clear();
-                        setState(
-                          () {
-                            const CustomWidget();
+                        Expanded(
+                          child: TextField(
+                            controller: searchControll,
+                            decoration: const InputDecoration(
+                              hintText: 'Search',
+                              border: InputBorder.none,
+                            ),
+                            onChanged: (value) {
+                              context
+                                  .read<SearchBloc>()
+                                  .add(SeachWord(searchValue: value));
+                            },
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            searchControll.clear();
+                            setState(
+                              () {
+                                const CustomWidget();
+                              },
+                            );
                           },
-                        );
-                      },
-                      icon: const Icon(Icons.clear),
+                          icon: const Icon(Icons.clear),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: searchControll.text.isEmpty ||
+                          searchControll.text.trim().isEmpty
+                      ? const CustomWidget()
+                      : state.songModelistBloc.isEmpty
+                          ? emptySearch()
+                          : searchfound(context, state.songModelistBloc),
+                ),
+              ],
             ),
-            Expanded(
-              child: searchControll.text.isEmpty ||
-                      searchControll.text.trim().isEmpty
-                  ? const CustomWidget()
-                  : data.value.isEmpty
-                      ? emptySearch()
-                      : searchfound(context, data),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
-  searchfound(context, ValueNotifier<List<AudioModel>> data) {
+  searchfound(context, List<AudioModel> data) {
     getAll();
     return ListView.builder(
-      itemCount: data.value.length,
+      itemCount: data.length,
       itemBuilder: (context, index) {
-        var _song = data.value[index];
+        var _song = data[index];
         bool _isfav = isFavsong(_song);
         return InkWell(
           onTap: () {
-            PlayingAudio(data.value, index);
+            PlayingAudio(data, index);
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => NowPlayingScreen(),
@@ -128,7 +134,7 @@ class _ScreenSearchState extends State<ScreenSearch> {
                     size: 40,
                   ),
                   title: Text(
-                    data.value[index].songname!,
+                    data[index].songname!,
                     overflow: TextOverflow.ellipsis,
                   ),
                   trailing: Row(

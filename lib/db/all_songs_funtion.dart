@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 
 ValueNotifier<List<AudioModel>> allsongNotifer = ValueNotifier([]);
-
+List<AudioModel> allsongbloc = [];
 Future<void> addToAllsongs(AudioModel value) async {
   final allsongdB = await Hive.openBox<AudioModel>('all_song_db');
   bool check = false;
@@ -21,7 +21,9 @@ Future<void> addToAllsongs(AudioModel value) async {
 
 Future<void> getAllSongs() async {
   final allsongdB = await Hive.openBox<AudioModel>('all_song_db');
+  allsongbloc.clear();
+  allsongbloc.addAll(allsongdB.values);
   allsongNotifer.value.clear();
-  allsongNotifer.value.addAll(allsongdB.values);
+  allsongNotifer.value.addAll(allsongbloc);
   allsongNotifer.notifyListeners();
 }
