@@ -23,7 +23,7 @@ Future<void> getAllSongs() async {
   final allsongdB = await Hive.openBox<AudioModel>('all_song_db');
   allsongbloc.clear();
   allsongbloc.addAll(allsongdB.values);
-  allsongNotifer.value.clear();
-  allsongNotifer.value.addAll(allsongbloc);
-  allsongNotifer.notifyListeners();
+  // allsongNotifer.value.clear();
+  // allsongNotifer.value.addAll(allsongbloc);
+  // allsongNotifer.notifyListeners();
 }

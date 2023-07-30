@@ -4,13 +4,12 @@ import 'package:fine_tune/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-// import 'package:flutter/src/foundation/change_notifier.dart';
-
 ValueNotifier<List<AudioModel>> addfav = ValueNotifier([]);
+List<AudioModel> favoriteList = [];
 Future<void> addtofav(AudioModel value) async {
   final dB = await Hive.openBox<AudioModel>('All');
   bool check = false;
-  for (var element in addfav.value) {
+  for (var element in favoriteList) {
     if (element.songId == value.songId) {
       check = true;
       break;
@@ -19,15 +18,17 @@ Future<void> addtofav(AudioModel value) async {
   if (check == false) {
     int _id = await dB.add(value);
     value.id = _id;
-    addfav.notifyListeners();
+    // addfav.notifyListeners();
   }
 }
 
 Future<void> getAll() async {
   final dB = await Hive.openBox<AudioModel>('All');
-  addfav.value.clear();
-  addfav.value.addAll(dB.values);
-  addfav.notifyListeners();
+  favoriteList.clear();
+  favoriteList.addAll(dB.values);
+  // addfav.value.clear();
+  // addfav.value.addAll(dB.values);
+  // addfav.notifyListeners();
 }
 
 Future<void> deletefav(AudioModel value) async {
@@ -45,11 +46,11 @@ Future<void> deletefav(AudioModel value) async {
 }
 
 bool isFavsong(AudioModel song) {
-  for (var element in addfav.value) {
+  for (var element in favoriteList) {
     if (element.songId == song.songId) {
       return true;
     }
   }
-  addfav.notifyListeners();
+  // addfav.notifyListeners();
   return false;
 }

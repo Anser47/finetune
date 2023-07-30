@@ -1,3 +1,4 @@
+import 'package:fine_tune/application/favorite_bloc/favorites_bloc.dart';
 import 'package:fine_tune/model/model.dart';
 import 'package:fine_tune/model/playlistmode.dart';
 import 'package:fine_tune/screens/splash.dart';
